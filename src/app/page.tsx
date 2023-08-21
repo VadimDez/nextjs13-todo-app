@@ -1,8 +1,11 @@
+import { PrismaPromise, Todo } from "@prisma/client";
+
 import { db } from "../../lib/db";
-import { AddTodo } from "../../components/AddTodo";
+import { AddTodo } from "../components/AddTodo";
+import { TodoComponent } from "../components/Todo";
 
 async function getTodos() {
-  return await db.todo.findMany({
+  return db.todo.findMany({
     select: {
       id: true,
       text: true,
@@ -12,7 +15,7 @@ async function getTodos() {
 }
 
 export default async function Home() {
-  const todos = await getTodos();
+  const todos = (await getTodos()) as Todo[];
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
@@ -20,8 +23,12 @@ export default async function Home() {
       <div className="relative flex place-items-center">
         {todos.length ? (
           <ul>
-            {todos.map((todo) => {
-              return <li key={todo.id}>{todo.text}</li>;
+            {todos.map((todo: Todo) => {
+              return (
+                <li key={todo.id}>
+                  <TodoComponent todo={todo} />
+                </li>
+              );
             })}
           </ul>
         ) : (

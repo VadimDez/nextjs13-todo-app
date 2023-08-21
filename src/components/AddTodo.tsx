@@ -8,7 +8,7 @@ export const AddTodo = () => {
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [text, setText] = useState<string>("");
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSaving(true);
 

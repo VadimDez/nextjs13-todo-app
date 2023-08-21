@@ -1,21 +1,21 @@
-import { Todo } from "@prisma/client"
+import { Todo } from "@prisma/client";
 
 import { db } from "../../../../lib/db";
 
-async function getTodo(todoId: Todo("id")) {
-  return await db.todo.findFirst({
+function getTodo(todoId: Todo["id"]) {
+  return db.todo.findFirst({
     where: {
-      id: todoId
+      id: todoId,
     },
   });
 }
 
 interface TodoPageProps {
-  params: { todoId: number }
+  params: { todoId: number };
 }
 
-export default function Todo({ params }: TodoPageProps) {
-  const todo = await getTodo(params.todoId);
+export default async function Todo({ params }: TodoPageProps) {
+  const todo = (await getTodo(params.todoId)) as Todo;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -23,5 +23,5 @@ export default function Todo({ params }: TodoPageProps) {
         Todo {todo.id} {todo.text}
       </div>
     </main>
-  )
+  );
 }
